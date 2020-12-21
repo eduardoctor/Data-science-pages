@@ -82,3 +82,4 @@ That’s it! You have now two options to interact with R and python. I still pre
 1. [Calling python from R](https://cran.r-project.org/web/packages/reticulate/vignettes/calling_python.html)
 1. [Anaconda Documentation](https://docs.anaconda.com/)
 
+
