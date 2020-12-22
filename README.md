@@ -16,4 +16,4 @@ You can see other notes, resources and links that do contain little to no code i
 
 2. [How to use python in R](https://eduardorod1229.github.io/Data-science-pages/How-to-use-python-in-R.html)
     1. This file aims to explain which packages and libraries are needed to navigate the `reticulate` R library. It includes examples toggling between R and python using system data `iris` and `flights`. It also includes the R Markdown file to copy and try out in your local machine.
-    
+   
