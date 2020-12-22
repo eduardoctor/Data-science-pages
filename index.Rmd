@@ -5,6 +5,8 @@ date: " "
 output: 
   prettydoc::html_pretty:
     theme: cayman
+    highlight: github
+    
 ---
 
 ```{r setup, include=FALSE}
@@ -12,19 +14,32 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-This repository is meant to include various tutorials on how to use different packages mainly as personal notes to navigaet data science and other statistical methods. However, feel free to use it if you find it helpful.
+This repository is meant to include various tutorials on how to use different packages mainly as personal notes to navigate data science to perform a variety of statistical analysis. However, feel free to use anything that you may find helpful.
 
-The main topics discussed here are: Python, google colab, R and occassionally STATA
+The main topics discussed here are: 
+
+* [Python ![Python](images/python_logo.png)](https://python.org) 
+* [Google colab ![google colab](images/colab_logo.png)](https://colab.research.google.com)
+* [R studio ![R](images/Rlogo.png)](https://rstudio.com)
+* [STATA](https://stata.com) (ocassionally)
 
 You can see other notes, resources and links that do contain little to no code in my [wiki](https://github.com/eduardorod1229/Notes-and-tutorials/wiki). 
 
 
 ## Contents:
 1. [Intro to R with a python perspective](https://eduardorod1229.github.io/Data-science-pages/Intro_to_R.html)
-    1. This page walks through the basics of R making some references for the python user. From basic syntax, variable creation to data frame manipulation
+    
+    * Walks through the basics of R making some references for the python user. From basic syntax, variable creation to data frame manipulation.  
 
+\n
 
-2. [How to use python in R](https://eduardorod1229.github.io/Data-science-pages/How-to-use-python-in-R.html)
-    1. This file aims to explain which packages and libraries are needed to navigate the `reticulate` R library. It includes examples toggling between R and python using system data `iris` and `flights`. It also includes the R Markdown file to copy and try out in your local machine.
+2. [How to use Python in R](https://eduardorod1229.github.io/Data-science-pages/How-to-use-python-in-R.html)
+    
+    * Discusses packages and libraries needed to navigate the `reticulate` R library. Includes examples toggling between R and Python using the system data `iris` and `flights`. See my [Github](https://github.com/eduardorod1229/Notes-and-tutorials) for the RMarkdown code discussed here.\
+<br />
+
+**[Back to Github](https://github.com){style="float:right"}**\ 
+<br />
+[![Octocat](images/Octocat.png){style="float:right"}](https://github.com)
     
 
