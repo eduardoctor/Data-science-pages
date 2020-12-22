@@ -1,0 +1,602 @@
+---
+title: "Basics of R"
+subtitle: 'An introduction to R from a Python perspective'
+author: " "
+output:
+  html_document:
+    theme: spacelab
+    highlight: haddock
+    toc: TRUE
+    toc_float:
+      collapsed: FALSE
+      smooth_scroll: FALSE 
+    number_sections: FALSE
+    
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction 
+The goal of this document is to familiarize the user with the basics of R such as syntax and datatypes establishing some analogous terms for the python user.  
+
+While the majority of the code below does not contain realworld data it contains common problems that users encounter when exploring and manipulating data in preparation for analysis.
+
+
+To begin some keyboard shortcuts used are:
+*`Ctrl`+`Enter` = Run the current line
+*`Ctrl` + `Shift` + `Enter` = Runs a chunk of code in R markdown or the whole script.
+
+
+## The basics
+Assign values to variables and performing math. Is very similar to python with small changes.
+
+```{r}
+x <- 42
+x
+
+y <-8
+y
+
+sum <- x + y
+sum
+```
+### R Data types
+```{r}
+numerics <- 4.5 #These are called numerics (float in python)
+integer <- 4 #4, 5, 6, 7 are called numerics as well (int64 in python)
+logical <- TRUE #or `False` are called logical (Booleans in python)
+text <- "This is just text" #These are called characters (strings in python)
+numeric_vector <- c(1,10,49,100,50) #Note that a series of data are called vectors(lists in python)
+character_vector <- c("a","b","c","d","e") #This is another type of vector taking characters
+logical_vector <- c(TRUE, FALSE, TRUE, TRUE, FALSE)
+```
+
+You can check the type of data using the `class([variable])` as follows:
+```{R}
+class(numerics)
+class(integer)
+class(logical)
+class(text)
+```
+You can combine two vectors by using the `names` command. Use `names()` and put inside parentesis the data - usually numeric- and the "labels" inside of the vector to be assigned.
+
+Alternatively, you can explicitly specify the column names.
+
+```{r}
+#Using explicitly the "column name"
+names(logical_vector) <- c('A','B','C','D','E')
+logical_vector
+
+#Using the pre-specified variable to establish the column names
+names(numeric_vector) <- c(character_vector)
+numeric_vector
+
+#Notice that now the variable was modified to a matrix and now the variable is the matrix itself
+```
+You can perform mathematical operations between vectors.
+```{r}
+A_vector <- c(10,20,30,40,50)
+B_vector <- c(14,50,60,70,80)
+
+sum_vector <- A_vector + B_vector
+sum_vector
+
+mult_vector <- A_vector * B_vector
+mult_vector
+
+div_vector <- A_vector / B_vector
+div_vector
+
+total_vector <- sum_vector + mult_vector + div_vector
+total_vector
+
+
+#Building on previous opperations:
+names(total_vector) <- c(character_vector)
+total_vector
+
+```
+You can perform a variety of calculations on vectors
+```{r}
+t2 <- sum(numeric_vector) #sums the whole column/vector
+t2
+t3 <- sum(A_vector)
+t3
+t4 <- sum(B_vector)
+t4
+
+#Building on previous functions
+t5 <- c(t2, t3, t4, 10, 20)
+names(t5) <- c(character_vector)
+t5
+#Note: If the vector that contains your labels is not the same size you will see N/A in the column name
+```
+### Parsing data from Vectors
+```{r}
+A_value <- t5[2]
+A_value
+#Note you can create vectors parsing the values. In the case below the arrange of values was changed
+rearranged <- c(t5[2],t5[3],t5[1], t5[5], t5[4])
+rearranged
+
+#Using a range of values [:]. Just like in python the first number is where it will start and the second number is where the vector will end. 
+#Unlike python both numbers are inclusive
+parsed <- rearranged[2:4]
+parsed
+
+#Just like in python, you can select a column by puting the name of the column in between [ ]
+vector_by_name <- t5[c("a","e","b")]
+vector_by_name
+```
+### Performing operations with vectors
+The main logical operators in R are:
+
+*  `<` less than
+*  `>` greater than
+*  `<=` less or equal than
+*  `>=` more or equal than
+*  `==` exactly equal to
+*  `!=` not equal to
+
+The result of using the operators above would be `TRUE` or `FALSE`
+
+```{r}
+#You can create a boolean vector to check for values
+#The expression below checks if the values on t5 are greater than 100
+selection_vector <- t5 >100
+selection_vector
+
+
+#Uses the selection vector to extract the values that returned to be TRUE and assign those values to a new vector
+selected_vector <- t5[selection_vector]
+selected_vector
+```
+
+**Ordering Vectors**
+We can also order vectors if the vector is passed only to the original vector the return will be the order of the values.
+```{r}
+unordered_vector <- c(50,26, 34,1,54,56,70,100)
+vector_order <- order(unordered_vector)
+vector_order
+```
+Although helpful, it would be more helpful to actually order the vector
+
+```{r}
+ordered_vector <- unordered_vector[order(unordered_vector)]
+ordered_vector
+```
+
+## Matrices
+
+To construct a matrix from the scratch you need to use the `matrix()` operator. 
+The first argument is the data that you want, the second argument is whether you want the values to fill the matrix by rows, the third argument is the number of rows.
+
+**By row**
+```{r}
+m1 <- matrix(1:9, byrow = TRUE, nrow = 3)
+m1
+```
+**By Column**
+
+```{r}
+m2 <- matrix(1:9, byrow = FALSE, nrow = 3)
+m2
+```
+ **If you have a series of vectors**
+```{r}
+new_vector <- c(numeric_vector, character_vector, logical_vector)
+new_vector
+
+m3 <- matrix(new_vector, nrow=5, byrow=FALSE)
+m3
+```
+Notice that since we have included vectors with different data types everything was converted to `strings`
+
+Lets change the colum and row names using two different methods
+```{r}
+column_names <- c('Numbers','Letters','Logical')
+row_names <- c('Subj1','Subj2','Subj3','Subj4','Subj5')
+
+#Name the columns
+colnames(m3) <- column_names
+
+
+#Name the rows
+rownames(m3) <- row_names
+
+#Print the final matrix
+m3
+```
+
+The code above named the columns and rows using vectors that contain the names but you can do it "manually" resulting in the same end product. We have modified it slightly to highlight that it is a different code.
+
+```{r}
+m3 <- matrix(c(numeric_vector, character_vector, logical_vector), nrow=5, byrow=FALSE, dimnames = list(c('a1','a2','a3','a4','a5'),c("numbers",'letters','logical')))
+m3
+```
+
+### Calculate by columns or rows. 
+This function calculates all of the columns or rows and stores the result on a different vector but they do have to be numeric. The code below is just for reference but if run, it will create errors since there are string and logical values.  
+
+  *Note:* matrices can hold/contain ONLY ONE data type. If you want to change the data type of only one column transform to `dataframe` using `as.data.frame` and `as.matrix` commands.. See [as.data.frame](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/as.data.frame) and [as.matrix](https://www.rdocumentation.org/packages/raster/versions/3.4-5/topics/as.matrix) documentation for more details.
+
+
+`number_colum_sum <- colSums(matrix_name)`. It adds by columns  
+
+`number_row_sum <- rowSums(matrix_name)`. It adds by rows
+  
+### Binding
+
+You can bind by columns or by rows
+
+**By Rows**
+
+```{r}
+rows_binded <- rbind(m3, numeric_vector)
+rows_binded
+```
+As noted above the `numeric_vector` was added at the last row. Since in the example we combined a matrix and a vector the vector only places the amount of columns available. However if we bind two matrices all rows will be added.
+
+```{r}
+m_rbinded <- rbind(m3, m2)
+m_rbinded
+```
+**By Columns**
+```{r}
+m_cbinded <- cbind(m3, character_vector)
+m_cbinded
+```
+`cbind` Adds a column to the matrix.  
+
+*Note:* The vector or matrix binded on argument 2 needs to have the same amount of rows to be binded.
+
+Select specific columns on a matrix
+```{r}
+logics <- m_cbinded[,3]
+logics
+```
+Select specific rows from columns. In the case below we will select a2, a3 and a4 from the `Numeric_vector`.  
+
+We will take this opportunity to change the data types of the selected values from `string` to `numeric`. And to prove that the datatypes were indeed changed to numeric, we will perform mathematical operations on the extracted values.
+
+```{r}
+selected_numbers <- m_cbinded[2:4,1]
+selected_numbers
+class(selected_numbers) <- "numeric"
+mean(selected_numbers)
+median(selected_numbers)
+```
+
+Extracting all the rows from a specified column
+```{r}
+character_v <- m_cbinded[,4]
+character_v
+```
+
+## Factors
+Factors are the same as categories in `pandas`. Factors describe categorical variables.  
+
+To create factors in R, you make use of the function `factor()`. First, we will create a vector that contains all the observations that belong to the categories. In the example below we will create a sex_vector.
+```{r}
+sex_vector <- c("Male", "Female", "Female", "Male", "Male")
+```
+
+Now we let R konw that these are categories or factors
+```{r}
+sex_vector <-factor(sex_vector)
+sex_vector
+class(sex_vector)
+```
+Although we created the factor in several steps, the same result can be achieved on a single line
+
+```{r}
+sex_vector <-factor(c("Male", "Female", "Female", "Male", "Male"))
+class(sex_vector)
+```
+Interestingly we can set the specific order or hierarchy (if the variable is ordinal) that our variable has.
+
+```{r}
+temperature <- factor(c('High', 'Low', 'High','Low','Medium'),order = TRUE, levels = c('Low','Medium','High'))
+temperature
+```
+We can also let R assign the levels automaticcaly. However, it will do it alphabetically.  However, it might not be conformant to what we want or need. We can change the order and content of the levels. To map `F` to `Female` and `M` to `Male` we use the `levels()` function
+
+```{r}
+sex <- factor(c('M','F','F','M','M'))
+levels(sex)
+sex
+
+levels(sex) <- c('Female','Male')
+sex
+
+```
+This is just to map the letter to the actual names. Note in the output the pre-specified levels were F and M thus to spell them out we need to specify them in the same order.  
+
+**Summarize factors**  
+
+To explore the levels of a variable and how many observations we have we can simply apply the `summary()` function. Note that any variable, matrix or dataframe can be passed to te function and a series of 
+
+```{r}
+summary(sex)
+summary(temperature)
+```
+
+# Higher order Data
+
+## Data Frames  
+
+  **Exploring data frames**
+
+In the following section we will use one of the pre-loaded datasets. However, as the first step we will include the code to import `.csv` files to dataframes.  
+
+Similar to the `pd.read_csv` command in python, R studio has a `read.csv` command. Unlike python where the delimiter is passed through the function to read tab delimited files you need to use the `tab.delim` command. Use `?read.csv` and `?tab.delim` for more information.
+
+`read.csv("file.name", stringsAsFactors = FALSE, headers = TRUE, sep = ',')`
+
+To read the pre-loaded datasets just assign it to a variable or call it directly.  
+
+The first step to explore the data is to see the "structure" of the data. This command will give out the number of observations (rows) and the number of variables (columns) that the dataset has. Additionally, it will display the name and datatype of each variable
+
+```{r mtcars}
+str(mtcars)
+ 
+```
+**Summarize the data**
+
+This command will display the basic statistics of each variable
+
+
+```{r}
+summary(mtcars)
+```
+
+**Creating dataframes from the scratch***
+
+If you want to create a dataframe from the scratch you would need to set the vectors first. We will use the ones created before `row_names`, `numeric_vector`, `character_vector`,`logical_vector`,`sex` and create a datafrane from them. All vectors need to be the same size, otherwise you will receive an error. Notice that the vector name is used as column name and the type of data between `< >`.
+
+```{r}
+df <- data.frame(row_names, numeric_vector, character_vector, logical_vector, sex)
+df
+```
+If you want you can explore the data as we did before notice that now we have factors and the leves are noted.
+
+```{r}
+str(df)
+summary(df)
+```
+
+Similarly as we did with matrices, we can extract specific values from dataframes. We will work with the preloaded daaframe
+
+**Extracts row 1 column 3**
+
+```{r}
+mtcars[1,3]
+```
+**Extracts the whole fourth row (Hornet 4 Drive)**
+```{r}
+mtcars[4,]
+```
+**Extracts the entire column 3 (disp)**
+```{r}
+mtcars[,3]
+```
+
+**Select the first 3 values of the WT column**
+
+```{r}
+mtcars[1:3,'wt']
+```
+Just as before this is for exploration purposes but we can assign those values to variables. Select the `wt` variable and assign it to a variable. To specify the column we will use the `$` symbol. This is the equivalent to `mtcars.wt` or `mtcars['wt']` in Python
+
+```{r}
+wt <- mtcars$wt
+wt
+```
+The difference between python and R is that once the variable is extracted from the dataframe it "looses" its visual format and now the rows are shown next to eachother.
+
+### Filtering data
+
+After creating a boolean vector we can use it to filter the data. In the example below we will extract those cars with less than 21 mpg and create a new filtered dataframe. 
+Notice that you can select the mpg column in three different ways:
+
+1. `mtcars$mpg` (displayed below)
+2. `mtcars[,mpg]`
+3. `mtcars[,1]`
+```{r}
+efficiency_vector <- mtcars$mpg < 21
+# Now we tell R to check every row where `efficiency_vector==TRUE`
+efficient_cars <- mtcars[efficiency_vector,]
+efficient_cars
+```
+
+Another way to filter a dataframe is using the `subset` function
+
+```{r}
+subset(mtcars, subset = mpg < 21)
+```
+You can subset with strings or logical variables as well
+```{r}
+subset(df, subset = sex == 'Male')
+```
+
+Similarly to the vectors we can order a whole dataframe based on a variable
+
+```{r}
+wt_order <- order(mtcars$wt)
+wt_order
+```
+
+```{r}
+wt_ordered <- mtcars[wt_order,]
+wt_ordered
+```
+
+
+## Lists
+
+A list differs from python in the sense that it can store multiple types of data. In that way it is more similar to dictionaries in python or [Mongodb](https://www.mongodb.com/). 
+
+In the example below we are creating a list with vectors, matrices and dataframes. Notice that when the list is called the "item number" is noted between two brackets `[[n]]`
+
+```{r}
+my_list <- list(numeric_vector, m3, df)
+my_list
+
+```
+We can name each one of the items for easy identification. Note that now, the item changed to `$Name`
+
+```{r}
+names(my_list) <- c('Numeric vector','Matrix','Custom dataframe')
+my_list
+```
+To ilustrate how lists are similar to `dict` in pyton we will create a 'movie' list. 
+
+```{r}
+mov <- 'The shining'
+act <- c('Jack Nicholson','Shelley Duval','Danny Lloyd','Scatman Crothers','Barry Nelson')
+scores <- c(4.5,4.0,5.0)
+sources <- c('IMDb1','IMDb2','IMDb3')
+comments <- c('Best Horror Film I have Ever seen','A truly brilliant and scary film from SK','A masterpiece of psychological horror')
+rev <- data.frame(scores, sources, comments)
+
+shining_list <- list(moviename = mov, actors = act, reviews = rev)
+shining_list
+```
+As seen above, this list would be equivalent to `dict = {'Movies':mov, 'actors':act,'reviews':rev}` in python.
+
+  Similar to python we can extract or parse the values of a list using fairly similar syntax
+  
+```{r}
+shining_list[['actors']]
+#Produces the same output as:
+shining_list$actors
+```
+However to extract a specific item from the list pay attention to the placement of the square brackets. Example: extract the second actor from the second item in the list ('actors')
+
+```{r}
+shining_list[[2]][2]
+```
+This is helpful to know in case you want to perform operations with lists. However, you need to be careful with the kind of data that you are performing such operations. 
+
+  In the example below we parse the shining_list to extract the `scores` from the `reviews` data frame. But, when this is extracted it is not changed to vector, rather it stays in the original data type, in this case, dataframe. Thus, eventhough it is a single column of `doubles` or `floats` when performing the `mean` operation we need to treat that variable as an entire new dataframe and include the notation:
+  * `mean (df$df)`
+  OR
+  * `mean(df[,])`
+```{r}
+scores <- shining_list[['reviews']]['scores']
+avg_score <- mean(scores$scores)
+avg_score
+```
+
+## Contingecy tables
+
+Contingency tables are tables that show relationships between data. They are a great starting point to explore data, usually categorical. Now we will use the superheroes database for a variety of reasons. One of them is that is not a pre-loaded data and it takes a few lines of code to get it and prepare it. Thus, it is a good opportunity to code a little higher level chunk of code. The code can be found [here](https://www.rdocumentation.org/packages/fivethirtyeight/versions/0.5.0/topics/comic_characters) 
+
+```{r, echo=FALSE, message=FALSE, include = FALSE}
+library(dplyr)
+library(readr)
+library(tidyr)
+library(lubridate)
+library(janitor)
+```
+
+```{r, warning = FALSE, message=FALSE}
+#Get the DC characters
+dc_characters <-  "https://github.com/fivethirtyeight/data/raw/master/comic-characters/dc-wikia-data.csv" %>% 
+  read_csv() %>% 
+  clean_names() %>% 
+  mutate(publisher = "DC")
+
+#Marvel characters
+marvel_characters <- "https://github.com/fivethirtyeight/data/raw/master/comic-characters/marvel-wikia-data.csv" %>% 
+  read_csv() %>% 
+  clean_names() %>% 
+  mutate(publisher = "Marvel")
+
+# Merging datasets
+
+comics <- 
+  dc_characters %>% 
+  bind_rows(marvel_characters) %>% 
+  separate(first_appearance, c("year2", "month"), ", ", remove = FALSE) %>%
+  mutate(
+    # If month was missing, set as January and day as 01:
+    month = ifelse(is.na(month), "01", month),
+    day = "01",
+    # Note some years missing:
+    date = ymd(paste(year, month, day, sep = "-")),
+    align = factor(
+      align, 
+      levels = c("Bad Characters", "Reformed Criminals", "Netural Characters", "Good Characters"),
+      ordered = TRUE)
+  ) %>%
+  select(publisher, everything(), -c(year2, day))
+```
+After merging the data we need to clean up a little bit. Specifically, we will change numerous columns to factors. In order to do that, we first create a vector with the column names that we want to modify. Following, we apply `factor` function and check the data and the levels
+```{r}
+str(comics)
+head(comics)
+col_names <- c('eye', 'hair', 'sex', 'alive')
+comics[col_names] <- lapply(comics[col_names],factor)
+levels(comics$eye)
+```
+Now we can create some contingency tables to look for correlations
+
+```{r}
+table(comics$sex,comics$align)
+
+```
+It seems that we don't have some factors with low counts which probably will not add much to our analysis and are adding an extra level to the current structure. We are going to drop some factors and "fuse" other ones. For example in the `sex` variable we have two genders that can be consider as one: 'Agender' and 'Genderless. The first block of code is to exclude specific factors. Notice that it was used the opperand `!=` meaning we want every other character that do not meet these conditions. Additionally, unlike python were we can use the `OR` opperand (`|` in R), here we need to be more explicit in our conditions. 
+
+  We need the `dplyr` library which was loaded previously.
+
+```{r, warning=FALSE}
+library(forcats)
+comics_filtered <- comics %>%
+  filter(align != 'Reformed Criminals', align !='Neutral Characters', 
+         sex != 'Genderfluid Characters', sex!= 'Transgender Characters') %>%
+  droplevels()
+levels(comics_filtered$sex)
+```
+
+Now, we want to combine factors into one using the `fct_collapse` function. it takes the following arguments: data, new vector name = c(variables to be combined).
+
+  Notice that the syntax to select a column below is very similar to python where we would write `comics_filtered` **\=** *function* . The only difference is the symbol to assign the variable. 
+  
+  After passing this function we check with our contingency table the results of our filter and factor combination.
+```{r}
+
+comics_filtered['sex'] <- fct_collapse(comics_filtered$sex, 
+                                       Genderless = c('Agender Characters','Genderless Characters'))
+
+table(comics_filtered$sex, comics_filtered$align)
+```
+
+
+  **UP NEXT: Visualization in R**
+
+
+
+Althought, we will have a separate section on data visualization. Here is a visual glimpse on how the data that we have manipulated so far would look like. 
+```{r, warning=FALSE, echo=FALSE}
+library(ggplot2)
+g1 <- ggplot(comics_filtered, aes(x = align, fill=sex)) + geom_bar(position = 'dodge')
+g1 + ggtitle("Filtered data by Character alignment") +
+  theme(plot.title= element_text(hjust =0.5))
+```
+
+```{r, echo=FALSE}
+g2 <- ggplot(comics_filtered, aes(x = sex, fill=align)) + 
+  geom_bar(position = 'dodge') +
+  ggtitle("Filtered data by Character gender") +
+  theme(plot.title= element_text(color='blue', size=14, face='bold', hjust=0.5)) +
+  theme(axis.text.x = element_text(angle=90), axis.title.x  = element_blank())
+  
+g2
+```
+
+#### [< Back Home](https://eduardorod1229.github.io/Data-science-pages/) \ \ \ \ \ \ \  [Python in R >](https://eduardorod1229.github.io/Data-science-pages/How-to-use-python-in-R.html)
+
